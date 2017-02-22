@@ -17,8 +17,8 @@ Dockerfileについてもパブリックページに書かれている内容の�
 差し替え用のfluent.confはdistディレクトリのfluent.confとなります。  
  
  /fluentd/  
- └── etc/  
-         └── fluent.conf  
+ └── etc/    
+       └── fluent.conf  
 
 これは、起動時に読み込むfluent.confの送信先を変更するために使用しています。  
 そのため、実際に動かすためのfluent.confを配置してください。  
