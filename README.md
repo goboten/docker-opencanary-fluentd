@@ -1,31 +1,31 @@
-Opencanary�ƘA�g���邽�߂�fluentd���\�z���邽�߂�Dockerfile�ł��B
+Opencanaryと連携するためのfluentdを構築するためのDockerfileです。
 
-docker�C���[�W�\�z�T���v���̓p�u���b�N�C���[�W���Q�l�ɂ��Ă��܂��Bhttps://hub.docker.com/r/fluent/fluentd/   
+dockerイメージ構築サンプルはパブリックイメージを参考にしています。https://hub.docker.com/r/fluent/fluentd/   
 
-�C���[�W���쐬���邽�߂ɓK���Ȗ��O�Ńf�B���N�g�����쐬���܂��B(�����ł�fluent�Ƃ��܂�)  
-�ȉ��̗l�Ƀt�@�C����z�u���܂�
+イメージを作成するために適当な名前でディレクトリを作成します。(ここではfluentとします)  
+以下の様にファイルを配置します
 
  fluent/  
- ������ Dockerfile  
- ������ fluent.conf <- �_�~�[�t�@�C���Ȃ̂�0byte�̋�t�@�C�����쐬���Ă��܂��B  
- ������ plugins/  
+ ├── Dockerfile  
+ ├── fluent.conf <- ダミーファイルなので0byteの空ファイルを作成しています。  
+ └── plugins/  
 
-fluent�t�H���_��fluent.conf��plugins�t�H���_�̓p�u���b�N�C���[�W����쐬����Ƃ��ɕK�v�ƂȂ邽�ߍ쐬�������܂��B  
-Dockerfile�ɂ��Ă��p�u���b�N�y�[�W�ɏ�����Ă�����e�̃v���O�C���� fluent-plugin-elasticsearch �� fluent-plugin-record-reformer ��ǉ����Ă��邾���ł��B  
-���Ƃ́A�N���I�v�V�����ŋ��fluent.conf��ݒ�ς݂�fluent.conf�ɍ����ւ��邾���ł��B  
-�����ւ��邽�߂� fluent.conf ��ۑ�����f�B���N�g����p�ӂ��܂��B  
-�����ւ��p��fluent.conf��dist�f�B���N�g����fluent.conf�ƂȂ�܂��B  
+fluentフォルダのfluent.confとpluginsフォルダはパブリックイメージから作成するときに必要となるため作成だけします。  
+Dockerfileについてもパブリックページに書かれている内容のプラグインに fluent-plugin-elasticsearch と fluent-plugin-record-reformer を追加しているだけです。  
+あとは、起動オプションで空のfluent.confを設定済みのfluent.confに差し替えるだけです。  
+差し替えるための fluent.conf を保存するディレクトリを用意します。  
+差し替え用のfluent.confはdistディレクトリのfluent.confとなります。  
  
  /fluentd/  
- ������ etc/  
-     ������ fluent.conf  
+ └── etc/  
+     └── fluent.conf  
 
-����́A�N�����ɓǂݍ���fluent.conf�̑��M���ύX���邽�߂Ɏg�p���Ă��܂��B  
-���̂��߁A���ۂɓ��������߂�fluent.conf��z�u���Ă��������B  
+これは、起動時に読み込むfluent.confの送信先を変更するために使用しています。  
+そのため、実際に動かすためのfluent.confを配置してください。  
 
-�����āAdocker�t�@�C������C���[�W���쐬����͈̂ȉ��̃R�}���h�ō쐬���Ă��܂��B  
+そして、dockerファイルからイメージを作成するのは以下のコマンドで作成しています。  
 $ sudo docker build -t fluentd ./  
 
-�N���͈ȉ��̃R�}���h�ƂȂ�܂��B  
+起動は以下のコマンドとなります。  
 $ sudo docker run --name fluentd -d -p 1514:1514 -v /fluentd/etc:/fluentd/etc fluentd
 
